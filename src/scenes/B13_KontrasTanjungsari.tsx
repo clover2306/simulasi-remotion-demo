@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from 'remotion';
 import {useCount} from '../lib/ui/ui';
 import {localF} from '../demoPlan';
+import {LiveMapContext} from '../components/LiveMapBg';
 import {
   PX,
   PixelBoard,
@@ -17,6 +18,7 @@ const DUR = 659; // 169.58 - 191.52s
 export const B13_KontrasTanjungsari: React.FC = () => {
   const f = useCurrentFrame();
   const {fps} = useVideoConfig();
+  const mapMode = useContext(LiveMapContext);
 
   const scoreStart = localF('B13', 177.58); // "Indeks kemakmuran tahun kedua: Sinarbaru 28, Tanjungsari 34"
   const stampAt = localF('B13', 185.24); // "kesimpulannya gampang: pengalaman menang..."
@@ -31,10 +33,13 @@ export const B13_KontrasTanjungsari: React.FC = () => {
     config: {damping: 14, stiffness: 170},
   });
 
-  const fadeOut = interpolate(f, [DUR - 20, DUR], [1, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
+  const fadeOut =
+    mapMode === 'full'
+      ? 1
+      : interpolate(f, [DUR - 20, DUR], [1, 0], {
+          extrapolateLeft: 'clamp',
+          extrapolateRight: 'clamp',
+        });
 
   return (
     <AbsoluteFill style={{backgroundColor: '#000'}}>

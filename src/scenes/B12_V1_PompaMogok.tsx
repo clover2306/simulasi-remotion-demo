@@ -100,27 +100,28 @@ export const B12_V1_PompaMogok: React.FC = () => {
           }}
         />
 
-        {/* Grass ground band (y local 410..546 -> screen 464..600) */}
+        {/* Grass ground band (y local 382..498 -> screen 436..552) */}
         <div
           style={{
             position: 'absolute',
             left: 0,
-            top: 410,
+            top: 382,
             width: W,
-            height: 136,
+            height: 116,
             background: '#548C46',
             borderTop: '6px solid #76B25E',
           }}
         />
 
-        {/* River strip at bottom of vignette stage (y local 546..602 -> screen 600..656, above 660!) */}
+        {/* River strip elevated above lower bank & 60px caption zone (y local 498..550 -> screen 552..604, 56px clear of y=660) */}
         <div
           style={{
             position: 'absolute',
             left: 0,
-            top: 546,
+            top: 498,
             width: W,
-            height: 60,
+            height: 52,
+            boxSizing: 'border-box',
             background: '#347EC8',
             borderTop: '6px solid #D8BA7E',
             borderBottom: '4px solid #1C4878',
@@ -129,7 +130,7 @@ export const B12_V1_PompaMogok: React.FC = () => {
         >
           {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => {
             const sx = ((f * 3 + i * 175) % (W + 80)) - 40;
-            const sy = 16 + (i % 3) * 12;
+            const sy = 12 + (i % 3) * 10;
             return (
               <div
                 key={i}
@@ -147,14 +148,27 @@ export const B12_V1_PompaMogok: React.FC = () => {
           })}
         </div>
 
+        {/* Far riverbank grass strip (y local 550..606 -> screen 604..660, caption zone >= 660 remains pure empty) */}
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 550,
+            width: W,
+            height: 56,
+            background: '#3C6934',
+            borderTop: '4px solid #C8AA6E',
+          }}
+        />
+
         {/* Big Kevin on left (~half screen height = 310px) */}
-        <div style={{position: 'absolute', left: 112, top: 144}}>
+        <div style={{position: 'absolute', left: 112, top: 116}}>
           <PixelSprite src="portrait_kevin_sad.png" w={150} h={310} />
         </div>
         <PixelChip
           text="KEVIN • VISIONER"
           x={187}
-          y={466}
+          y={438}
           centerX
           borderColor={PX.gold}
           fontSize={12}
@@ -165,7 +179,7 @@ export const B12_V1_PompaMogok: React.FC = () => {
           style={{
             position: 'absolute',
             left: 368 + sputterX,
-            top: 286 + sputterY,
+            top: 258 + sputterY,
           }}
         >
           <PixelSprite src="pump.png" w={184} h={168} />
@@ -175,7 +189,7 @@ export const B12_V1_PompaMogok: React.FC = () => {
         {[0, 1, 2, 3].map((i) => {
           const cycle = ((f + i * 14) % 56) / 56;
           const px = 428 + Math.sin(cycle * Math.PI * 2 + i) * 14;
-          const py = 278 - cycle * 150;
+          const py = 250 - cycle * 150;
           const sz = 22 + cycle * 26;
           const op = (1 - cycle) * 0.85;
           return (
@@ -198,7 +212,7 @@ export const B12_V1_PompaMogok: React.FC = () => {
         <PixelBoard
           title="POMPA AIR"
           x={460}
-          y={464}
+          y={436}
           w={220}
           accent={PX.red}
         />
@@ -207,7 +221,7 @@ export const B12_V1_PompaMogok: React.FC = () => {
           <PixelStamp
             text="MOGOK!"
             x={460}
-            y={230}
+            y={202}
             at={brokenAt}
             color={PX.red}
             rot={-6}
@@ -220,7 +234,7 @@ export const B12_V1_PompaMogok: React.FC = () => {
           style={{
             position: 'absolute',
             left: 790,
-            top: 288,
+            top: 260,
             display: 'flex',
             gap: 48,
             opacity: crowdS,
@@ -244,7 +258,7 @@ export const B12_V1_PompaMogok: React.FC = () => {
         <PixelChip
           text="WARGA SINARBARU"
           x={965}
-          y={466}
+          y={438}
           centerX
           borderColor={PX.amber}
           color={PX.amber}
@@ -255,7 +269,7 @@ export const B12_V1_PompaMogok: React.FC = () => {
         <PixelBubble
           text="PINTAR DI SEKOLAH, TAPI DI SAWAH?"
           x={680}
-          y={114}
+          y={88}
           maxW={490}
           tail="bottom-right"
           accent={PX.ink}

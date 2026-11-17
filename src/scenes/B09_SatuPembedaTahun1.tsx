@@ -129,7 +129,7 @@ export const B09_SatuPembedaTahun1: React.FC = () => {
               pad="16px 24px"
             >
               <div style={{fontSize: 13, color: PX.white, textAlign: 'center', lineHeight: 1.7}}>
-                YANG MEMBEDAKAN CUMA SATU:
+                YANG MEMBEDAKAN MEREKA CUMA SATU:
               </div>
               <div style={{fontSize: 16, color: PX.gold, textAlign: 'center', marginTop: 8}}>
                 APA YANG DIIZINKAN PEMIMPINNYA

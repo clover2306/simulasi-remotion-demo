@@ -1,8 +1,18 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {W, H} from '../lib/tokens';
 import {PIXEL_FONT} from '../pixelFont';
 import {hudStateAt} from '../demoPlan';
+import {LiveMapBg, LiveMapContext, type MapEra} from './LiveMapBg';
+
+export type HudStateFn = (globalFrame: number) => {
+  year: number;
+  s: number;
+  t: number;
+  yearLabel?: string;
+};
+
+export const HudContext = React.createContext<HudStateFn>(hudStateAt);
 
 export const PX = {
   bgDark: '#141210',
@@ -344,6 +354,22 @@ export const PixelMapBg: React.FC<{
   dur = 300,
 }) => {
   const f = useCurrentFrame();
+  const mapMode = useContext(LiveMapContext);
+  if (mapMode === 'full' && blurPx === 0 && plate !== 'sawah_kering') {
+    const era: MapEra = plate === 'y2' ? 'y2' : plate === 'drought' ? 'drought' : 'y1';
+    return (
+      <LiveMapBg
+        era={era}
+        zoomFrom={zoomFrom}
+        zoomTo={zoomTo}
+        panX={panX}
+        panY={panY}
+        dim={dim}
+        shimmer={shimmer}
+        dur={dur}
+      />
+    );
+  }
   const p = interpolate(f, [0, Math.max(1, dur)], [0, 1], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
@@ -393,7 +419,8 @@ export const PixelMapBg: React.FC<{
 
 export const GlobalHud: React.FC = () => {
   const globalFrame = useCurrentFrame();
-  const {year, s, t} = hudStateAt(globalFrame);
+  const stateFn = useContext(HudContext);
+  const {year, s, t, yearLabel} = stateFn(globalFrame);
   return (
     <div
       style={{
@@ -439,13 +466,13 @@ export const GlobalHud: React.FC = () => {
           left: '50%',
           top: 12,
           translate: '-50% 0',
-          fontSize: 16,
+          fontSize: yearLabel ? 13 : 16,
           color: PX.white,
           textShadow: '2px 2px 0 #000',
           whiteSpace: 'nowrap',
         }}
       >
-        TAHUN {year}
+        {yearLabel ?? `TAHUN ${year}`}
       </div>
       {/* Right: TANJUNGSARI */}
       <div
